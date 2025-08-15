@@ -171,7 +171,7 @@ class DictClass:
         for kw_arg in kw_args:
             kw_arg2 = kw_arg.replace('_', '-')
             value = kw_args[kw_arg]
-            if not (value in (None, [], False)):
+            if not (value in (None, [], False)) :
                 self.__dict__[kw_arg2] = value
 
     def __repr__(self):
@@ -854,6 +854,14 @@ class Uroman:
             but excluding \t, \r, \n"""
         return (len(s) == 1) and (ud.category(s) == 'Zs')
 
+    '''
+    Return the unicode name of a character; if it's unavailable for
+    this character, return a custom name.
+    Args:
+        char: the character whose unicode name is returned
+    Returns:
+        a string of the character's unicode name
+    '''
     def chr_name(self, char: str) -> str:
         try:
             return ud.name(char)
@@ -1256,31 +1264,54 @@ class NumEdge(Edge):
 
 
 class Lattice:
-    """Lattice for a specific romanization instance. Has edges."""
     def __init__(self, s: str, uroman: Uroman, lcode: str = None):
+        """
+        Lattice for a specific romanization instance. Has edges.
+        Args:
+            s: the string being romanized
+            uroman: a URoman instance 
+            lcode: an optional string specifying the language code for the source language of s (? TODO: verify this)
+        """
         self.s = s
         self.lcode = lcode
-        self.lattice = defaultdict(set)
-        self.max_vertex = len(s)
-        self.uroman = uroman
+        self.lattice = defaultdict(set) #defaultdict will have any key value who doesnt exist get assigned an empty set upon attempts to access it
+        self.max_vertex = len(s) # TODO: why is this called maxvertex? at most one vertex for each char?
+        self.uroman = uroman # TODO: what is this for?
         self.props = {}
-        self.simple_top_rom_cache = {}
+        self.simple_top_rom_cache = {} # TODO: what is this for?
         self.contains_script = defaultdict(bool)
         self.check_for_scripts()
+    
 
     def check_for_scripts(self):
+        """
+        Checks each character in the Lattice text for its associated
+        script and updates the Lattice about the presence of those scripts.
+        """
+        # For each character in the string, get the associated script name (?) from the URoman instance and then
+        # flag the Lattice as containing that script
         for c in self.s:
             script_name = self.uroman.chr_script_name(c)
             self.contains_script[script_name] = True
+            # \u2800 - \u28FF is the range for unicode braille patterns
             if regex.search(r'[\u2800-\u28FF]', self.s):
                 self.contains_script['Braille'] = True
 
+
     def add_edge(self, edge: Edge):
+        """
+        Adds an edge to the Lattice
+        """
         self.lattice[(edge.start, edge.end)].add(edge)
         self.lattice[(edge.start, 'right')].add(edge.end)
         self.lattice[(edge.end, 'left')].add(edge.start)
 
+
     def __str__(self):
+        """
+        Stringification of the Lattice object writes out
+        each edge, its associated text, and its associated type.
+        """
         edges = []
         for start in range(self.max_vertex):
             for end in self.lattice[(start, 'right')]:
@@ -1290,40 +1321,108 @@ class Lattice:
 
     @staticmethod
     def char_is_braille(c: str) -> bool:
+        """
+        Verify whether a character is Braille or not.
+        
+        Args:
+          c - the character being checked
+        Returns:
+          true if the character is Braille, false if not
+        """
         return 0x2800 <= ord(c[0]) <= 0x28FF
 
-    # Help Tibet
     def char_is_subjoined_letter(self, c: str) -> bool:
+        """
+        Verify whether or not the character is a subjoined letter
+        or not. This is helpful for Tibetan (? OG repo had a comment that said 
+        Help Tibet)
+
+        Args:
+          c - the character being checked 
+        Returns:
+          True if the character is a subjoined letter, false otherwise
+        """
         return "SUBJOINED LETTER" in self.uroman.chr_name(c)
 
+    
     def char_is_regular_letter(self, c: str) -> bool:
+        """
+        Verify whether or not the character is a regular (not subjoined)
+        letter.
+
+        Args:
+          c - the character being checked 
+        Returns:
+          True if the character is a regular letter.
+        """
         char_name = self.uroman.chr_name(c)
         return ("LETTER" in char_name) and not ("SUBJOINED" in char_name)
 
     def char_is_letter(self, c: str) -> bool:
+        """
+        Verify whether or not the character is a letter.
+        
+        Args:
+          c - the character being checked 
+        
+        Returns:
+          True if the character is a letter
+        """
         return "LETTER" in self.uroman.chr_name(c)
 
     def char_is_vowel_sign(self, c: str) -> bool:
+        """
+        Verify whether or not a character is a vowel sign.
+
+        Args:
+          c - the character being checked 
+        Returns:
+            True if the character is a vowel sign, false otherwise
+        """
         return self.uroman.dict_bool[('is-vowel-sign', c)]
 
     def char_is_letter_or_vowel_sign(self, c: str) -> bool:
+        """
+        Verify whether or not a character is either a vowel sign or a letter.
+
+        Args:
+          c - the character being checked 
+        Returns:
+            True if the character is a vowel sign or letter, false otherwise
+        """
         return self.char_is_letter(c) or self.char_is_vowel_sign(c)
 
     def is_at_start_of_word(self, position: int) -> bool:
+        """
+        Determine whether or not a given index is where the word or words
+        begin in the Lattice string.
+
+        Args:
+          - position: an index in the Lattice string
+        Returns:
+          True if the beginning of the word in the Lattice starts at `position`
+        """
         # return not regex.match(r'(?:\pL|\pM)', self.s[position-1:position])
-        first_char = self.s[position]
+        first_char = self.s[position] 
         first_char_is_braille = self.char_is_braille(first_char)
         end = position
+        
+        # Check if it is already cached that this character is preceded by an alphabetic character
         if (preceded_by_alpha := self.props.get(('preceded_by_alpha', end), None)) in (True, False):
             return not preceded_by_alpha
+        
+        # Manually check if the previous character in the string is alphabetic
         if end:
             prev_orig_letter = self.s[end-1:end]
             if prev_orig_letter.isalpha():
                 self.props[('preceded_by_alpha', position)] = True
                 return False
+        
+        # Check all the edges that direct into 'end' 
         for start in self.lattice[(end, 'left')]:
             for edge in self.lattice[(start, end)]:
                 prev_letter = None if edge.txt == '' else edge.txt[-1]
+                # If previous letter is alphabetic or an apostrophe (if the word is Braille)
                 if len(edge.txt) and (prev_letter.isalpha() or (first_char_is_braille and (prev_letter in ["'"]))):
                     self.props[('preceded_by_alpha', position)] = True
                     return False
@@ -1331,22 +1430,45 @@ class Lattice:
         return True
 
     def is_at_end_of_word(self, position: int) -> bool:
+        """
+        Determine whether or not a given index is at the end of a 
+        word in the Lattice string
+
+        Args:
+          - position: an index in the Lattice string
+        Returns:
+          True if the a word in the Lattice string ends at `position`
+        """
         if (cached_followed_by_alpha := self.props.get(('followed_by_alpha', position), None)) in (True, False):
             return not cached_followed_by_alpha
         start = position
+        # If the current letter is alphabetic 
+        # TODO: figure out if this is checking the char at position or following position or what?
+        #   thought we would be checking if the next char is not alpha
         if start < self.max_vertex:
             next_orig_letter = self.s[start:start+1]
             if next_orig_letter.isalpha():
                 self.props[('followed_by_alpha', position)] = True
                 return False
+        
+        #   Check to see if the characters following `position` are all nonspacing marks (diacritics, accents,
+        # vowel signs, etc.; `NUKTA` is a particular diactric that has to be checked separately)
         while (start+1 < self.max_vertex) \
                 and self.uroman.char_is_nonspacing_mark(self.s[start]) \
                 and ('NUKTA' in self.uroman.chr_name(self.s[start])):
             start += 1
+        
+        # Iterating from where nonspacing marks stopped until the max vertex count
         for end in range(start + 1, self.max_vertex + 1):
             s = self.s[start:end]
+            # if the substring [start:end] is ever not a valid prefix, stop checking
             if not self.uroman.dict_bool[('s-prefix', s)]:
                 break
+
+            #   For each romanization rule associated with this substring, 
+            # check if the rule applies to more than just the start of the word; if it 
+            # does apply beyond the start of the word, that means there is an alphabetic romanization
+            # after the current position, so this isn't the end of the word.
             for rom_rule in self.uroman.rom_rules[s]:
                 rom = rom_rule['t']
                 if (not rom_rule['use-only-at-start-of-word']) and regex.search(r'\pL', rom):
@@ -1356,53 +1478,126 @@ class Lattice:
         return True
 
     def is_at_end_of_syllable(self, position: int) -> Tuple[bool, str]:
-        """At least initially for Thai"""
+        """
+        Determine whether a given index is at the end of a syllable;
+        if it is, return the type of syllable it is at the end of #TODO: verify that this is correct
+        
+        """
+        # At least initially for Thai
         prev_char = self.s[position-2] if position >= 2 else None
         # char = self.s[position-1] if position >= 1 else None
-        next_char = self.s[position] if position < self.max_vertex else None
-        if self.uroman.dict_str[('tone-mark', next_char)]:
-            adj_position = position + 1
-            next_char = self.s[adj_position] if adj_position < self.max_vertex else None
-            # print('TONE-MARK', position, next_char)
-        else:
-            adj_position = position
-        next_char2 = self.s[adj_position + 1] if adj_position + 1 < self.max_vertex else None
-        if prev_char is None:
+        
+        context = self._syllable_context(position)
+        prev_prev_char = context["prev_prev_char"] # two chars before `position`
+        prev_char = context["prev_char"] # TODO: description for this? 
+        curr_char = context["curr_char"] # char at `context_pos` (might skip a tone mark)
+        context_pos = context["context_pos"] # position after skipping tone marks
+        next_char = context["next_char"] # char one index after `context_pos`  
+        
+        # ===============================================
+        # ====== Start of old variable definitions ======
+        # next_char = self.s[position] if position < self.max_vertex else None
+        # if self.uroman.dict_str[('tone-mark', next_char)]:
+        #     #   If the given position is just a tone marker, instead 
+        #     # check if the *next* character is at the end of the syllable.
+        #     adj_position = position + 1
+        #     next_char = self.s[adj_position] if adj_position < self.max_vertex else None
+        #     # print('TONE-MARK', position, next_char)
+        # else:
+        #     adj_position = position
+        # next_char2 = self.s[adj_position + 1] if adj_position + 1 < self.max_vertex else None
+        # ======= End of old variable definitions =======
+        # ===============================================
+
+
+        # TODO: further refactor this method; it's too messy right now
+
+        if prev_prev_char is None:
             return False, 'start-of-string'
-        if not regex.search(r'(?:\pL|\pM)$', prev_char):  # start of token
+        if not regex.search(r'(?:\pL|\pM)$', prev_prev_char):  # start of token
             return False, 'start-of-token'
-        if self.uroman.dict_str[('syllable-info', prev_char)] == 'written-pre-consonant-spoken-post-consonant':
+        if self.uroman.dict_str[('syllable-info', prev_prev_char)] == 'written-pre-consonant-spoken-post-consonant':
+            #   this handles the case where the previous character is a vowel that is written prior
+            # to a consonant but pronounced *after* the character 
             return False, 'pre-post-vowel-on-left'
-        if self.uroman.dict_str[('syllable-info', next_char)] == 'written-pre-consonant-spoken-post-consonant':
+        if self.uroman.dict_str[('syllable-info', curr_char)] == 'written-pre-consonant-spoken-post-consonant':
+            #   if the next character is meant to be pronounced after the consonant that is written after it,
+            # then this is the end of the syllable.
             return True, 'pre-post-vowel-on-right'
-        if adj_position >= self.max_vertex:  # end of string
+        if context_pos >= self.max_vertex:  # end of string; always a syllable boundary
             return True, 'end-of-string'
+        
         # if not self.char_is_letter_or_vowel_sign(next_char):  # end of token
         if not regex.match(r'(?:\pL|\pM)', next_char):  # end of token
+            # If next char isn't a letter or nonspacing mark, then it's definitely the end of the token and syllable
             return True, 'end-of-token'
+        
         if position > 0:
             left_edge = self.best_left_neighbor_edge(position-1)
             if left_edge and regex.search(r'[bcdfghjklmnpqrstvxz]$', left_edge.txt):
                 return False, 'consonant-to-the-left'
-        next_char_rom = first_non_none(self.simple_top_romanization_candidate_for_span(adj_position,
-                                                                                       adj_position + 2,
+        next_char_rom = first_non_none(self.simple_top_romanization_candidate_for_span(context_pos,
+                                                                                       context_pos + 2,
                                                                                        simple_search=True),
-                                       self.simple_top_romanization_candidate_for_span(adj_position,
-                                                                                       adj_position + 1,
+                                       self.simple_top_romanization_candidate_for_span(context_pos,
+                                                                                       context_pos + 1,
                                                                                        simple_search=True),
                                        "?")
         if not regex.match(r"[aeiou]", next_char_rom.lower()):  # followed by consonant
             return True, f'not-followed-by-vowel {next_char_rom}'
-        if (next_char == '\u0E2D') and (next_char2 is not None):  # THAI CHARACTER O ANG
-            next_char2_rom = first_non_none(self.simple_top_romanization_candidate_for_span(adj_position+1,
-                                                                                            adj_position+2,
+        if (next_char == '\u0E2D') and (next_char is not None):  # THAI CHARACTER O ANG
+            next_char_rom = first_non_none(self.simple_top_romanization_candidate_for_span(context_pos+1,
+                                                                                            context_pos+2,
                                                                                             simple_search=True),
                                             "?")
-            if regex.match(r"[aeiou]", next_char2_rom.lower()):
+            if regex.match(r"[aeiou]", next_char_rom.lower()):
                 return True, 'o-ang-followed-by-vowel'  # In that context Thai char. "o ang" is considered a consonant
         return False, 'not-at-syllable-end-by-default'
 
+    def _syllable_context(self, position: int) -> dict:
+        """
+        Helper method to extract contextual characters used for syllable boundary logic.
+        
+        Args:
+          - position: the index around which the context is being formed
+
+        Returns:
+          - a dictionary with the previous, current, and next characters and
+            their positions (all relative to the index of `position`)
+        """
+        # For Thai and similar scripts (in which vowels may be written before consonants
+        # that they are in fact pronounced *after*), handle tone marks specially
+        prev_prev_char = self.s[position-2] if position >= 2 else None
+        prev_char = self.s[position-1] if position >= 1 else None
+        curr_char = self.s[position] if position < self.max_vertex else None
+
+        # If current char is a tone mark, shift context to next char
+        if self.uroman.dict_str[('tone-mark', curr_char)]:
+            context_pos = position + 1
+            curr_char = self.s[context_pos] if (context_pos < self.max_vertex) else None
+        else:
+            context_pos = position
+        
+        next_char = self.s[context_pos + 1] if (context_pos + 1 < self.max_vertex) else None
+
+        return {
+            "prev_prev_char": prev_prev_char,
+            "prev_char": prev_char,
+            "curr_char": curr_char,
+            "context_pos": context_pos,
+            "next_char": next_char
+        }
+
     def romanization_by_first_rule(self, s) -> str | None:
+        '''
+        Try to romanize a string according to its first corresponding 
+        Romanization rule
+
+        Args:
+          - s: the string being romanized
+        Returns:
+          - the romanized string if possible, or None if there is no such rule stored
+        '''
         try:
             return self.uroman.rom_rules[s][0]['t']
         except IndexError:
@@ -1410,8 +1605,10 @@ class Lattice:
 
     def expand_rom_with_special_chars(self, rom: str, start: int, end: int, **args) \
             -> Tuple[str, int, int, str | None]:
-        """This method contains a number of special romanization heuristics that typically modify
-        an existing or preliminary edge based on context."""
+        """
+        This method contains a number of special romanization heuristics that typically modify
+        an existing or preliminary edge based on context 
+        """
         orig_start = start
         uroman = self.uroman
         full_string = self.s
