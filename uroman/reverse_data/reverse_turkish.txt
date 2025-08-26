@@ -1,0 +1,230 @@
+# Reverse Turkish Romanization Table
+# Format: latin::target::script::priority::context
+# Higher priority numbers indicate more specific/preferred mappings
+
+# Turkish-specific letter mappings (highest priority)
+Ch::Ç::Turkish::500
+ch::ç::Turkish::500
+Sh::Ş::Turkish::500
+sh::ş::Turkish::500
+
+# Turkish vowel replacements (high priority, Turkish context only)
+I::İ::Turkish::400
+i::i::Turkish::400
+I::ı::Turkish::400
+i::ı::Turkish::400
+
+# Turkish vowel diacritics (high priority)
+Oe::Ö::Turkish::400
+oe::ö::Turkish::400
+Ue::Ü::Turkish::400
+ue::ü::Turkish::400
+
+# Turkish double vowel to ğ patterns (high priority)
+aa::ağ::Turkish::400
+ee::eğ::Turkish::400
+ii::iğ::Turkish::400
+oo::oğ::Turkish::400
+uu::uğ::Turkish::400
+
+# Basic Turkish letters (medium priority)
+a::a::Turkish::300
+b::b::Turkish::300
+c::c::Turkish::300
+d::d::Turkish::300
+e::e::Turkish::300
+f::f::Turkish::300
+g::g::Turkish::300
+h::h::Turkish::300
+j::j::Turkish::300
+k::k::Turkish::300
+l::l::Turkish::300
+m::m::Turkish::300
+n::n::Turkish::300
+o::o::Turkish::300
+p::p::Turkish::300
+q::k::Turkish::300
+r::r::Turkish::300
+s::s::Turkish::300
+t::t::Turkish::300
+u::u::Turkish::300
+v::v::Turkish::300
+w::v::Turkish::300
+x::ks::Turkish::300
+y::y::Turkish::300
+z::z::Turkish::300
+
+# Common Turkish words (very high priority)
+evet::evet::Turkish::600
+hayır::hayır::Turkish::600
+teşekkür::teşekkür::Turkish::600
+lütfen::lütfen::Turkish::600
+merhaba::merhaba::Turkish::600
+günaydın::günaydın::Turkish::600
+iyi geceler::iyi geceler::Turkish::600
+hoşça kal::hoşça kal::Turkish::600
+görüşürüz::görüşürüz::Turkish::600
+nasılsın::nasılsın::Turkish::600
+iyiyim::iyiyim::Turkish::600
+tamam::tamam::Turkish::600
+peki::peki::Turkish::600
+elbette::elbette::Turkish::600
+tabii::tabii::Turkish::600
+kesinlikle::kesinlikle::Turkish::600
+asla::asla::Turkish::600
+belki::belki::Turkish::600
+muhtemelen::muhtemelen::Turkish::600
+kesinlikle::kesinlikle::Turkish::600
+
+# Turkish place names (very high priority)
+Istanbul::İstanbul::Turkish::600
+Ankara::Ankara::Turkish::600
+Izmir::İzmir::Turkish::600
+Bursa::Bursa::Turkish::600
+Antalya::Antalya::Turkish::600
+Adana::Adana::Turkish::600
+Konya::Konya::Turkish::600
+Gaziantep::Gaziantep::Turkish::600
+Kayseri::Kayseri::Turkish::600
+Mersin::Mersin::Turkish::600
+Diyarbakir::Diyarbakır::Turkish::600
+Samsun::Samsun::Turkish::600
+Denizli::Denizli::Turkish::600
+Eskisehir::Eskişehir::Turkish::600
+Urfa::Urfa::Turkish::600
+Malatya::Malatya::Turkish::600
+Erzurum::Erzurum::Turkish::600
+Van::Van::Turkish::600
+Batman::Batman::Turkish::600
+Elazig::Elazığ::Turkish::600
+
+# Turkish common phrases (high priority)
+nasıl gidiyor::nasıl gidiyor::Turkish::500
+çok güzel::çok güzel::Turkish::500
+çok teşekkür ederim::çok teşekkür ederim::Turkish::500
+rica ederim::rica ederim::Turkish::500
+affedersiniz::affedersiniz::Turkish::500
+özür dilerim::özür dilerim::Turkish::500
+ne yapıyorsun::ne yapıyorsun::Turkish::500
+nerede yaşıyorsun::nerede yaşıyorsun::Turkish::500
+kaç yaşındasın::kaç yaşındasın::Turkish::500
+ne zaman::ne zaman::Turkish::500
+nerede::nerede::Turkish::500
+nasıl::nasıl::Turkish::500
+ne kadar::ne kadar::Turkish::500
+kim::kim::Turkish::500
+hangi::hangi::Turkish::500
+
+# Turkish numbers (medium priority)
+bir::bir::Turkish::400
+iki::iki::Turkish::400
+üç::üç::Turkish::400
+dört::dört::Turkish::400
+beş::beş::Turkish::400
+altı::altı::Turkish::400
+yedi::yedi::Turkish::400
+sekiz::sekiz::Turkish::400
+dokuz::dokuz::Turkish::400
+on::on::Turkish::400
+yirmi::yirmi::Turkish::400
+otuz::otuz::Turkish::400
+kırk::kırk::Turkish::400
+elli::elli::Turkish::400
+altmış::altmış::Turkish::400
+yetmiş::yetmiş::Turkish::400
+seksen::seksen::Turkish::400
+doksan::doksan::Turkish::400
+yüz::yüz::Turkish::400
+bin::bin::Turkish::400
+
+# Turkish colors (medium priority)
+kırmızı::kırmızı::Turkish::400
+mavi::mavi::Turkish::400
+yeşil::yeşil::Turkish::400
+sarı::sarı::Turkish::400
+siyah::siyah::Turkish::400
+beyaz::beyaz::Turkish::400
+kahverengi::kahverengi::Turkish::400
+gri::gri::Turkish::400
+turuncu::turuncu::Turkish::400
+pembe::pembe::Turkish::400
+mor::mor::Turkish::400
+lacivert::lacivert::Turkish::400
+
+# Turkish family words (medium priority)
+anne::anne::Turkish::400
+baba::baba::Turkish::400
+kardeş::kardeş::Turkish::400
+abla::abla::Turkish::400
+abi::abi::Turkish::400
+çocuk::çocuk::Turkish::400
+bebek::bebek::Turkish::400
+dede::dede::Turkish::400
+nine::nine::Turkish::400
+amca::amca::Turkish::400
+hala::hala::Turkish::400
+dayı::dayı::Turkish::400
+teyze::teyze::Turkish::400
+
+# Turkish food words (medium priority)
+ekmek::ekmek::Turkish::400
+su::su::Turkish::400
+çay::çay::Turkish::400
+kahve::kahve::Turkish::400
+et::et::Turkish::400
+tavuk::tavuk::Turkish::400
+balık::balık::Turkish::400
+sebze::sebze::Turkish::400
+meyve::meyve::Turkish::400
+süt::süt::Turkish::400
+peynir::peynir::Turkish::400
+yumurta::yumurta::Turkish::400
+pilav::pilav::Turkish::400
+çorba::çorba::Turkish::400
+salata::salata::Turkish::400
+
+# Turkish time words (medium priority)
+bugün::bugün::Turkish::400
+dün::dün::Turkish::400
+yarın::yarın::Turkish::400
+şimdi::şimdi::Turkish::400
+sonra::sonra::Turkish::400
+önce::önce::Turkish::400
+sabah::sabah::Turkish::400
+öğle::öğle::Turkish::400
+akşam::akşam::Turkish::400
+gece::gece::Turkish::400
+hafta::hafta::Turkish::400
+ay::ay::Turkish::400
+yıl::yıl::Turkish::400
+saat::saat::Turkish::400
+dakika::dakika::Turkish::400
+
+# Turkish weather words (medium priority)
+güneşli::güneşli::Turkish::400
+yağmurlu::yağmurlu::Turkish::400
+karlı::karlı::Turkish::400
+rüzgarlı::rüzgarlı::Turkish::400
+sıcak::sıcak::Turkish::400
+soğuk::soğuk::Turkish::400
+ılık::ılık::Turkish::400
+nemli::nemli::Turkish::400
+kuru::kuru::Turkish::400
+bulutlu::bulutlu::Turkish::400
+
+# Turkish common verbs (medium priority)
+gitmek::gitmek::Turkish::400
+gelmek::gelmek::Turkish::400
+yapmak::yapmak::Turkish::400
+görmek::görmek::Turkish::400
+duymak::duymak::Turkish::400
+söylemek::söylemek::Turkish::400
+almak::almak::Turkish::400
+vermek::vermek::Turkish::400
+sevmek::sevmek::Turkish::400
+istemek::istemek::Turkish::400
+bilmek::bilmek::Turkish::400
+anlamak::anlamak::Turkish::400
+çalışmak::çalışmak::Turkish::400
+okumak::okumak::Turkish::400
+yazmak::yazmak::Turkish::400

@@ -1,0 +1,107 @@
+# General Reverse Romanization Table
+# Format: latin::target::script::priority::context
+# These are general patterns that can apply to multiple scripts
+
+# Common English words (medium priority)
+the::ال::Arabic::300
+and::و::Arabic::300
+or::أو::Arabic::300
+but::لكن::Arabic::300
+for::ل::Arabic::300
+with::مع::Arabic::300
+from::من::Arabic::300
+to::إلى::Arabic::300
+in::في::Arabic::300
+on::على::Arabic::300
+at::في::Arabic::300
+by::بواسطة::Arabic::300
+is::هو::Arabic::300
+are::هم::Arabic::300
+was::كان::Arabic::300
+were::كانوا::Arabic::300
+have::لديه::Arabic::300
+has::لديه::Arabic::300
+had::كان لديه::Arabic::300
+will::سوف::Arabic::300
+would::سوف::Arabic::300
+could::يمكن::Arabic::300
+should::يجب::Arabic::300
+may::قد::Arabic::300
+might::قد::Arabic::300
+can::يمكن::Arabic::300
+
+# Common prefixes
+un::غير::Arabic::200
+re::إعادة::Arabic::200
+pre::قبل::Arabic::200
+post::بعد::Arabic::200
+anti::ضد::Arabic::200
+pro::مع::Arabic::200
+con::مع::Arabic::200
+com::مع::Arabic::200
+dis::غير::Arabic::200
+en::في::Arabic::200
+em::في::Arabic::200
+in::في::Arabic::200
+im::في::Arabic::200
+il::غير::Arabic::200
+ir::غير::Arabic::200
+
+# Common suffixes
+ing::ينغ::Arabic::200
+ed::إد::Arabic::200
+er::إر::Arabic::200
+est::إست::Arabic::200
+ly::لي::Arabic::200
+ful::فول::Arabic::200
+less::ليس::Arabic::200
+ness::نيس::Arabic::200
+ment::منت::Arabic::200
+tion::شن::Arabic::200
+sion::شن::Arabic::200
+able::أبل::Arabic::200
+ible::إبل::Arabic::200
+ous::وس::Arabic::200
+al::ال::Arabic::200
+ic::إك::Arabic::200
+ive::إف::Arabic::200
+ize::إيز::Arabic::200
+ise::إيز::Arabic::200
+
+# Common word endings
+tion::شن::Arabic::250
+sion::شن::Arabic::250
+cian::شن::Arabic::250
+tial::شال::Arabic::250
+cial::شال::Arabic::250
+tious::شوس::Arabic::250
+cious::شوس::Arabic::250
+ture::شر::Arabic::250
+sure::شر::Arabic::250
+ance::انس::Arabic::250
+ence::نس::Arabic::250
+ant::انت::Arabic::250
+ent::نت::Arabic::250
+ary::اري::Arabic::250
+ery::اري::Arabic::250
+ory::وري::Arabic::250
+ize::إيز::Arabic::250
+ise::إيز::Arabic::250
+ify::إيفاي::Arabic::250
+fy::فاي::Arabic::250
+
+# Common consonant clusters
+str::ستر::Arabic::150
+spr::سبر::Arabic::150
+spl::سبل::Arabic::150
+scr::سكر::Arabic::150
+scl::سكل::Arabic::150
+squ::سكو::Arabic::150
+thr::ثر::Arabic::150
+chr::كر::Arabic::150
+phr::فر::Arabic::150
+shr::شر::Arabic::150
+thl::ثل::Arabic::150
+chl::كل::Arabic::150
+phl::فل::Arabic::150
+shl::شل::Arabic::150

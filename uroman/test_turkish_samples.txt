@@ -1,0 +1,48 @@
+# Turkish Test Samples for Reverse Romanization
+# These are romanized versions that should be converted back to proper Turkish
+
+::lcode tur Istanbul, Tuerkiye'de yer alan shehir ve uelkenin 81 ilinden biri.
+::lcode tur Merhaba! Nasilsin? Ben iyiyim, teshekkuer ederim.
+::lcode tur Izmir'de yashayan arkadashimla bulushtum.
+::lcode tur Ankara'nin hava durumu bugun cok guzel.
+::lcode tur Antalya'da tatil yapmak istiyorum.
+::lcode tur Eskisehir'den Konya'ya gittim.
+::lcode tur Elazig'da dogdugum sehir cok guzel.
+::lcode tur Diyarbakir'da kebap yedim.
+::lcode tur Van golu'nun etrafinda dolastim.
+::lcode tur Batman'da petrol endustrisi var.
+
+# Common Turkish words and phrases
+::lcode tur Evet, hayir, tamam, peki, elbette, tabii.
+::lcode tur Cok teshekkuer ederim, rica ederim.
+::lcode tur Affedersiniz, ozur dilerim, samahani.
+::lcode tur Nasil gidiyor? Nerede yashiyorsun?
+::lcode tur Kac yashindasin? Ne zaman geleceksin?
+
+# Numbers and colors
+::lcode tur Bir, iki, uc, dort, bes, alti, yedi, sekiz, dokuz, on.
+::lcode tur Kirmizi, mavi, yeshil, sari, siyah, beyaz.
+::lcode tur Kahverengi, gri, turuncu, pembe, mor, lacivert.
+
+# Family and food
+::lcode tur Anne, baba, kardesh, abla, abi, cocuk, bebek.
+::lcode tur Ekmek, su, chay, kahve, et, tavuk, balik.
+::lcode tur Sebze, meyve, sut, peynir, yumurta, pilav.
+
+# Time and weather
+::lcode tur Bugun, dun, yarin, shimdi, sonra, once.
+::lcode tur Sabah, ogle, aksham, gece, hafta, ay, yil.
+::lcode tur Guneshli, yagmurlu, karli, ruzgarli, sicak, soguk.
+
+# Verbs and actions
+::lcode tur Gitmek, gelmek, yapmak, gormek, duymak.
+::lcode tur Soylemek, almak, vermek, sevmek, istemek.
+::lcode tur Bilmek, anlamak, calishmak, okumak, yazmak.
+
+# Complex sentences
+::lcode tur Istanbul'da yashayan arkadashimla bulushtum ve cok mutlu oldum.
+::lcode tur Ankara'nin hava durumu bugun cok guzel, disari cikmak istiyorum.
+::lcode tur Antalya'da tatil yaparken cok eglendim ve guzel anilar biriktirdim.
+::lcode tur Eskisehir'den Konya'ya giderken yol uzerinde cok guzel manzaralar gordum.
+::lcode tur Elazig'da dogdugum sehir cok guzel ve orada cok mutlu bir cocukluk gecirdim.
+

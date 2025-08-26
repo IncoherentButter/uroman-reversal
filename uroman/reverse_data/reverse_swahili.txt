@@ -1,0 +1,399 @@
+# Reverse Swahili Romanization Table
+# Format: latin::target::script::priority::context
+# Higher priority numbers indicate more specific/preferred mappings
+
+# Basic Swahili letters (high priority)
+a::a::Swahili::100
+b::b::Swahili::100
+c::ch::Swahili::100
+d::d::Swahili::100
+e::e::Swahili::100
+f::f::Swahili::100
+g::g::Swahili::100
+h::h::Swahili::100
+i::i::Swahili::100
+j::j::Swahili::100
+k::k::Swahili::100
+l::l::Swahili::100
+m::m::Swahili::100
+n::n::Swahili::100
+o::o::Swahili::100
+p::p::Swahili::100
+q::k::Swahili::100
+r::r::Swahili::100
+s::s::Swahili::100
+t::t::Swahili::100
+u::u::Swahili::100
+v::v::Swahili::100
+w::w::Swahili::100
+x::ks::Swahili::100
+y::y::Swahili::100
+z::z::Swahili::100
+
+# Swahili digraphs and special sounds (higher priority)
+ch::ch::Swahili::200
+sh::sh::Swahili::200
+th::th::Swahili::200
+dh::dh::Swahili::200
+gh::gh::Swahili::200
+kh::kh::Swahili::200
+ng::ng::Swahili::200
+ny::ny::Swahili::200
+ng'::ng'::Swahili::250
+
+# Common Swahili words (very high priority)
+jambo::jambo::Swahili::500
+habari::habari::Swahili::500
+asante::asante::Swahili::500
+karibu::karibu::Swahili::500
+tafadhali::tafadhali::Swahili::500
+samahani::samahani::Swahili::500
+pole::pole::Swahili::500
+nzuri::nzuri::Swahili::500
+mzuri::mzuri::Swahili::500
+bora::bora::Swahili::500
+mbaya::mbaya::Swahili::500
+kubwa::kubwa::Swahili::500
+ndogo::ndogo::Swahili::500
+mpya::mpya::Swahili::500
+zamani::zamani::Swahili::500
+leo::leo::Swahili::500
+kesho::kesho::Swahili::500
+jana::jana::Swahili::500
+sasa::sasa::Swahili::500
+baada::baada::Swahili::500
+kabla::kabla::Swahili::500
+hapa::hapa::Swahili::500
+huko::huko::Swahili::500
+pale::pale::Swahili::500
+hivi::hivi::Swahili::500
+hivyo::hivyo::Swahili::500
+hayo::hayo::Swahili::500
+
+# Common Swahili phrases
+jambo sana::jambo sana::Swahili::400
+habari gani::habari gani::Swahili::400
+asante sana::asante sana::Swahili::400
+karibu sana::karibu sana::Swahili::400
+tafadhali nisaidie::tafadhali nisaidie::Swahili::400
+samahani sana::samahani sana::Swahili::400
+pole sana::pole sana::Swahili::400
+nzuri sana::nzuri sana::Swahili::400
+mzuri sana::mzuri sana::Swahili::400
+bora sana::bora sana::Swahili::400
+mbaya sana::mbaya sana::Swahili::400
+kubwa sana::kubwa sana::Swahili::400
+ndogo sana::ndogo sana::Swahili::400
+mpya sana::mpya sana::Swahili::400
+zamani sana::zamani sana::Swahili::400
+
+# Swahili greetings and expressions
+mambo::mambo::Swahili::400
+poa::poa::Swahili::400
+safi::safi::Swahili::400
+noma::noma::Swahili::400
+vipi::vipi::Swahili::400
+sijambo::sijambo::Swahili::400
+hujambo::hujambo::Swahili::400
+hatujambo::hatujambo::Swahili::400
+hamjambo::hamjambo::Swahili::400
+wajambo::wajambo::Swahili::400
+majambo::majambo::Swahili::400
+
+# Swahili numbers
+sifuri::sifuri::Swahili::300
+moja::moja::Swahili::300
+mbili::mbili::Swahili::300
+tatu::tatu::Swahili::300
+nne::nne::Swahili::300
+tano::tano::Swahili::300
+sita::sita::Swahili::300
+saba::saba::Swahili::300
+nane::nane::Swahili::300
+tisa::tisa::Swahili::300
+kumi::kumi::Swahili::300
+ishirini::ishirini::Swahili::300
+thelathini::thelathini::Swahili::300
+arobaini::arobaini::Swahili::300
+hamsini::hamsini::Swahili::300
+sitini::sitini::Swahili::300
+sabini::sabini::Swahili::300
+themanini::themanini::Swahili::300
+tisini::tisini::Swahili::300
+mia::mia::Swahili::300
+elfu::elfu::Swahili::300
+laki::laki::Swahili::300
+
+# Swahili family and people words
+mama::mama::Swahili::400
+baba::baba::Swahili::400
+dada::dada::Swahili::400
+kaka::kaka::Swahili::400
+mtoto::mtoto::Swahili::400
+watoto::watoto::Swahili::400
+mwanafunzi::mwanafunzi::Swahili::400
+wanafunzi::wanafunzi::Swahili::400
+mwalimu::mwalimu::Swahili::400
+walimu::walimu::Swahili::400
+daktari::daktari::Swahili::400
+madaktari::madaktari::Swahili::400
+mfarasi::mfarasi::Swahili::400
+wafanyikazi::wafanyikazi::Swahili::400
+mwanamke::mwanamke::Swahili::400
+wanawake::wanawake::Swahili::400
+mwanaume::mwanaume::Swahili::400
+wanaume::wanaume::Swahili::400
+
+# Swahili food and drink
+chakula::chakula::Swahili::400
+maji::maji::Swahili::400
+mkate::mkate::Swahili::400
+nyama::nyama::Swahili::400
+samaki::samaki::Swahili::400
+mchele::mchele::Swahili::400
+viazi::viazi::Swahili::400
+tunda::tunda::Swahili::400
+matunda::matunda::Swahili::400
+kahawa::kahawa::Swahili::400
+chai::chai::Swahili::400
+sukari::sukari::Swahili::400
+chumvi::chumvi::Swahili::400
+pilipili::pilipili::Swahili::400
+kitunguu::kitunguu::Swahili::400
+nyanya::nyanya::Swahili::400
+karoti::karoti::Swahili::400
+
+# Swahili places and locations
+nyumbani::nyumbani::Swahili::400
+shuleni::shuleni::Swahili::400
+hospitalini::hospitalini::Swahili::400
+dukani::dukani::Swahili::400
+hotelini::hotelini::Swahili::400
+mtaani::mtaani::Swahili::400
+mji::mji::Swahili::400
+miji::miji::Swahili::400
+nchi::nchi::Swahili::400
+bahari::bahari::Swahili::400
+mto::mto::Swahili::400
+milima::milima::Swahili::400
+msitu::msitu::Swahili::400
+nyika::nyika::Swahili::400
+
+# Swahili time and calendar
+siku::siku::Swahili::400
+wiki::wiki::Swahili::400
+mwezi::mwezi::Swahili::400
+mwaka::mwaka::Swahili::400
+saa::saa::Swahili::400
+dakika::dakika::Swahili::400
+sekunde::sekunde::Swahili::400
+asubuhi::asubuhi::Swahili::400
+mchana::mchana::Swahili::400
+jioni::jioni::Swahili::400
+usiku::usiku::Swahili::400
+jumamosi::jumamosi::Swahili::400
+jumapili::jumapili::Swahili::400
+jumatatu::jumatatu::Swahili::400
+jumanne::jumanne::Swahili::400
+jumatano::jumatano::Swahili::400
+alhamisi::alhamisi::Swahili::400
+ijumaa::ijumaa::Swahili::400
+
+# Swahili colors
+nyekundu::nyekundu::Swahili::400
+nyeupe::nyeupe::Swahili::400
+nyeusi::nyeusi::Swahili::400
+kijani::kijani::Swahili::400
+samawati::samawati::Swahili::400
+manjano::manjano::Swahili::400
+kahawia::kahawia::Swahili::400
+pink::pink::Swahili::400
+zambarau::zambarau::Swahili::400
+kijivu::kijivu::Swahili::400
+
+# Swahili common verbs
+kula::kula::Swahili::400
+kunywa::kunywa::Swahili::400
+kutembea::kutembea::Swahili::400
+kusoma::kusoma::Swahili::400
+kuandika::kuandika::Swahili::400
+kusikia::kusikia::Swahili::400
+kuona::kuona::Swahili::400
+kufanya::kufanya::Swahili::400
+kuja::kuja::Swahili::400
+kwenda::kwenda::Swahili::400
+kurudi::kurudi::Swahili::400
+kukaa::kukaa::Swahili::400
+kulala::kulala::Swahili::400
+kuamka::kuamka::Swahili::400
+kupanda::kupanda::Swahili::400
+kushuka::kushuka::Swahili::400
+
+# Swahili common adjectives
+mzuri::mzuri::Swahili::400
+mbaya::mbaya::Swahili::400
+kubwa::kubwa::Swahili::400
+ndogo::ndogo::Swahili::400
+mpya::mpya::Swahili::400
+zamani::zamani::Swahili::400
+nzuri::nzuri::Swahili::400
+bora::bora::Swahili::400
+ghali::ghali::Swahili::400
+rahisi::rahisi::Swahili::400
+ngumu::ngumu::Swahili::400
+laini::laini::Swahili::400
+kali::kali::Swahili::400
+tamu::tamu::Swahili::400
+chungu::chungu::Swahili::400
+baridi::baridi::Swahili::400
+moto::moto::Swahili::400
+joto::joto::Swahili::400
+
+# Swahili question words
+nani::nani::Swahili::400
+nini::nini::Swahili::400
+wapi::wapi::Swahili::400
+lini::lini::Swahili::400
+kwa nini::kwa nini::Swahili::400
+vipi::vipi::Swahili::400
+ngapi::ngapi::Swahili::400
+gani::gani::Swahili::400
+
+# Swahili conjunctions and prepositions
+na::na::Swahili::300
+au::au::Swahili::300
+lakini::lakini::Swahili::300
+kwa::kwa::Swahili::300
+katika::katika::Swahili::300
+kwenye::kwenye::Swahili::300
+kutoka::kutoka::Swahili::300
+hadi::hadi::Swahili::300
+mpaka::mpaka::Swahili::300
+baada::baada::Swahili::300
+kabla::kabla::Swahili::300
+wakati::wakati::Swahili::300
+kama::kama::Swahili::300
+kwa sababu::kwa sababu::Swahili::400
+basi::basi::Swahili::300
+hivyo::hivyo::Swahili::300
+bali::bali::Swahili::300
+
+# Swahili common nouns
+kitabu::kitabu::Swahili::400
+vitabu::vitabu::Swahili::400
+meza::meza::Swahili::400
+kiti::kiti::Swahili::400
+mlango::mlango::Swahili::400
+dirisha::dirisha::Swahili::400
+ukuta::ukuta::Swahili::400
+saa::saa::Swahili::400
+gari::gari::Swahili::400
+ndege::ndege::Swahili::400
+meli::meli::Swahili::400
+basi::basi::Swahili::400
+pikipiki::pikipiki::Swahili::400
+baiskeli::baiskeli::Swahili::400
+simu::simu::Swahili::400
+kompyuta::kompyuta::Swahili::400
+televisheni::televisheni::Swahili::400
+redio::redio::Swahili::400
+
+# Swahili loanwords from Arabic
+salaam::salaam::Swahili::400
+shukrani::shukrani::Swahili::400
+marhaba::marhaba::Swahili::400
+maasalaama::maasalaama::Swahili::400
+inshallah::inshallah::Swahili::400
+mashallah::mashallah::Swahili::400
+alhamdulillah::alhamdulillah::Swahili::400
+bismillah::bismillah::Swahili::400
+ramadhan::ramadhan::Swahili::400
+eid::eid::Swahili::400
+hajj::hajj::Swahili::400
+imam::imam::Swahili::400
+masjid::masjid::Swahili::400
+quran::quran::Swahili::400
+hadith::hadith::Swahili::400
+
+# Swahili loanwords from English (showing orthographic changes)
+hospital::hospitali::Swahili::400
+hotel::hoteli::Swahili::400
+school::shule::Swahili::400
+doctor::daktari::Swahili::400
+police::polisi::Swahili::400
+machine::mashine::Swahili::400
+taxi::teksi::Swahili::400
+train::treni::Swahili::400
+airport::airporti::Swahili::400
+bank::banki::Swahili::400
+office::ofisi::Swahili::400
+supermarket::supermarketi::Swahili::400
+restaurant::restauranti::Swahili::400
+clinic::kliniki::Swahili::400
+pharmacy::farmaci::Swahili::400
+
+# Additional English loanwords with orthographic changes
+computer::kompyuta::Swahili::400
+television::televisheni::Swahili::400
+radio::redio::Swahili::400
+bicycle::baiskeli::Swahili::400
+motorcycle::pikipiki::Swahili::400
+telephone::telefoni::Swahili::400
+
+# English loanwords with Swahili orthographic adaptations
+# These show how English words are adapted to Swahili phonetic rules
+# (NOT translations - same words, different spelling)
+
+# Common orthographic patterns in Swahili loanwords:
+# - Final consonants get vowels added (hospital -> hospitali)
+# - 'c' becomes 'k' or 's' (computer -> kompyuta)
+# - 'x' becomes 'ks' 
+# - English consonant clusters simplified
+# - Vowel harmony applied
+
+# More English loanwords with clear orthographic changes
+chemistry::kemia::Swahili::400
+physics::fizikia::Swahili::400
+geography::jiografia::Swahili::400
+history::historia::Swahili::400
+biology::biolojia::Swahili::400
+psychology::saikolojia::Swahili::400
+technology::teknolojia::Swahili::400
+democracy::demokrasia::Swahili::400
+
+# Swahili common expressions
+hakuna matata::hakuna matata::Swahili::500
+pole pole::pole pole::Swahili::400
+karibu tena::karibu tena::Swahili::400
+asante kwa::asante kwa::Swahili::400
+tafadhali nisaidie::tafadhali nisaidie::Swahili::400
+samahani sana::samahani sana::Swahili::400
+nzuri kabisa::nzuri kabisa::Swahili::400
+mzuri kabisa::mzuri kabisa::Swahili::400
+bora kabisa::bora kabisa::Swahili::400
+mbaya kabisa::mbaya kabisa::Swahili::400
+kubwa kabisa::kubwa kabisa::Swahili::400
+ndogo kabisa::ndogo kabisa::Swahili::400
+mpya kabisa::mpya kabisa::Swahili::400
+zamani kabisa::zamani kabisa::Swahili::400
+
+# Swahili numbers with prefixes
+mwanafunzi mmoja::mwanafunzi mmoja::Swahili::500
+mwanafunzi wa pili::mwanafunzi wa pili::Swahili::500
+mwanafunzi wa tatu::mwanafunzi wa tatu::Swahili::500
+mwanafunzi wa nne::mwanafunzi wa nne::Swahili::500
+mwanafunzi wa tano::mwanafunzi wa tano::Swahili::500
+
+# Swahili common verb forms
+ninakula::ninakula::Swahili::400
+unakula::unakula::Swahili::400
+anakula::anakula::Swahili::400
+tunakula::tunakula::Swahili::400
+mnakula::mnakula::Swahili::400
+wanakula::wanakula::Swahili::400
+nimekula::nimekula::Swahili::400
+umekula::umekula::Swahili::400
+amekula::amekula::Swahili::400
+tumekula::tumekula::Swahili::400
+mmekula::mmekula::Swahili::400
+wamekula::wamekula::Swahili::400

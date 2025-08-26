@@ -1,0 +1,111 @@
+# Reverse Arabic Romanization Table
+# Format: latin::arabic::script::priority::context
+# Higher priority numbers indicate more specific/preferred mappings
+
+# Basic Arabic letters (high priority)
+a::ا::Arabic::100
+b::ب::Arabic::100
+c::س::Arabic::100
+d::د::Arabic::100
+e::ي::Arabic::100
+f::ف::Arabic::100
+g::ج::Arabic::100
+h::ه::Arabic::100
+i::ي::Arabic::100
+j::ج::Arabic::100
+k::ك::Arabic::100
+l::ل::Arabic::100
+m::م::Arabic::100
+n::ن::Arabic::100
+o::و::Arabic::100
+p::ب::Arabic::100
+q::ق::Arabic::100
+r::ر::Arabic::100
+s::س::Arabic::100
+t::ت::Arabic::100
+u::و::Arabic::100
+v::ف::Arabic::100
+w::و::Arabic::100
+x::كس::Arabic::100
+y::ي::Arabic::100
+z::ز::Arabic::100
+
+# Common digraphs (higher priority)
+sh::ش::Arabic::200
+th::ث::Arabic::200
+kh::خ::Arabic::200
+dh::ذ::Arabic::200
+gh::غ::Arabic::100
+ch::چ::Arabic::200
+ph::ف::Arabic::150
+ng::نغ::Arabic::150
+
+# Common trigraphs (highest priority)
+shh::شح::Arabic::300
+thh::ثح::Arabic::300
+khh::خح::Arabic::300
+
+# Numbers
+0::٠::Arabic::100
+1::١::Arabic::100
+2::٢::Arabic::100
+3::٣::Arabic::100
+4::٤::Arabic::100
+5::٥::Arabic::100
+6::٦::Arabic::100
+7::٧::Arabic::100
+8::٨::Arabic::100
+9::٩::Arabic::100
+
+# Punctuation
+,::،::Arabic::100
+;::؛::Arabic::100
+?::؟::Arabic::100
+.::.::Arabic::100
+:: ::Arabic::100
+
+# Common Arabic words/names (very high priority)
+allah::الله::Arabic::500
+muhammad::محمد::Arabic::500
+ali::علي::Arabic::500
+fatima::فاطمة::Arabic::500
+hassan::حسن::Arabic::500
+hussein::حسين::Arabic::500
+ahmed::أحمد::Arabic::500
+omar::عمر::Arabic::500
+khalid::خالد::Arabic::500
+jamal::جمال::Arabic::500
+karim::كريم::Arabic::500
+noor::نور::Arabic::500
+sara::سارة::Arabic::500
+amina::أمينة::Arabic::500
+zainab::زينب::Arabic::500
+
+# Common Arabic phrases
+salam::سلام::Arabic::400
+shukran::شكرا::Arabic::400
+marhaba::مرحبا::Arabic::400
+maasalaama::مع السلامة::Arabic::400
+inshallah::إن شاء الله::Arabic::400
+mashallah::ما شاء الله::Arabic::400
+alhamdulillah::الحمد لله::Arabic::400
+bismillah::بسم الله::Arabic::400
+
+# Vowel combinations
+aa::آ::Arabic::150
+ee::يي::Arabic::150
+oo::وو::Arabic::150
+ii::يي::Arabic::150
+uu::وو::Arabic::150
+
+# Consonant clusters
+st::ست::Arabic::150
+tr::تر::Arabic::150
+dr::در::Arabic::150
+br::بر::Arabic::150
+gr::جر::Arabic::150
+kr::كر::Arabic::150
+pr::بر::Arabic::150
+sr::سر::Arabic::150
+tr::تر::Arabic::150
+vr::فر::Arabic::150
