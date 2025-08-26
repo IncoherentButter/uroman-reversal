@@ -68,3 +68,10 @@ dist
 # old Perl uroman
 bin/uroman.py
 lib/NLP/Romanizer.pm
+
+# Ignore __pycache__ directories
+__pycache__/ 
+# Ignores .pyc, pyo, and .pyd files (compiled python files)
+*.py[cod] 
+# Ignore python class files
+*$py.class
