@@ -1607,7 +1607,14 @@ class Lattice:
             -> Tuple[str, int, int, str | None]:
         """
         This method contains a number of special romanization heuristics that typically modify
-        an existing or preliminary edge based on context 
+        an existing or preliminary edge based on context. It handles various special cases, such
+        as Japanese and Gurmukhi consonant doubling, Thai vowel prefixes, and several others.
+
+        Args: 
+          - rom: the romanization string to be expanded TODO: verify this
+          - start: the start index of the romanization string TODO: verify this
+          - end: the end index of the romanization string, non-inclusive TODO: verify this
+          - args: additional arguments 
         """
         orig_start = start
         uroman = self.uroman
@@ -1621,13 +1628,15 @@ class Lattice:
         next_char = (full_string[end] if end < len(full_string) else '')
         # \u2820 is the Braille character indicating that the next letter is upper case
         if (prev_char == '\u2820') and regex.match(r'[a-z]', rom):
-            return rom[0].upper() + rom[1:], start-1, end, 'rom exp'
+            return rom[0].upper() + rom[1:], start-1, end, 'rom exp' 
+
         # noinspection SpellCheckingInspection   Normalize multi-upper case THessalonike -> Thessalonike,
         # noinspection SpellCheckingInspection   but don't change THESSALONIKE
         if start+1 == end and rom.isupper() and next_char.islower():
             ablation = args.get('ablation', '')     # VERBOSE
             if not ('nocap' in ablation):
                 rom = rom.capitalize()
+        
         # Japanese small tsu (and Gurmukhi addak) used as consonant doubler:
         if (prev_char and prev_char in 'っッ\u0A71') \
                 and (uroman.chr_script_name(prev_char) == uroman.chr_script_name(prev_char)) \
@@ -1847,7 +1856,12 @@ class Lattice:
                                      f'   p:{best_vowel_pos} {tibetan_letter_positions}\n')
 
     def add_default_abugida_vowel(self, rom: str, start: int, end: int, annotation: str = '') -> str:
-        """Adds an abugida vowel (e.g. "a") where needed. Important for many languages in South Asia."""
+        """
+        Abugidas are writing systems in which vowels are written as diactritics attached to 
+        preceding consonants; this method adds abugida vowels where appropriate.
+        This is important for many language familly scripts, including Brahmic scripts in Tibet,
+        South Asia, and Southeast Asia, Ethiopic scripts, and Canadian Indigenous scripts.
+        """
         uroman = self.uroman
         s = self.s
         # noinspection PyBroadException
@@ -1938,6 +1952,21 @@ class Lattice:
         return rom
 
     def cand_is_valid(self, rom_rule: RomRule, start: int, end: int, rom: str) -> bool:
+        """
+        Validates whether a romanization rule candidate is valid for the given position.
+        
+        Checks various constraints like word boundaries, language codes, and position-specific
+        usage rules to determine if the romanization can be applied.
+        
+        Args:
+            rom_rule: The romanization rule containing validation constraints
+            start: Starting position of the text segment in the input string
+            end: Ending position of the text segment in the input string  
+            rom: The romanized string to validate
+            
+        Returns:
+            True if the romanization rule is valid for the given position, False otherwise
+        """
         if rom is None:
             return False
         if rom_rule['dont-use-at-start-of-word'] and self.is_at_start_of_word(start):
@@ -1957,6 +1986,16 @@ class Lattice:
 
     # @profile
     def simple_sorted_romanization_candidates_for_span(self, start, end) -> List[str]:
+        """
+        Generates sorted romanization candidates for a text span based on romanization rules.
+
+        Args:
+            start: Starting position of the text span in the input string
+            end: Ending position of the text span in the input string
+            
+        Returns:
+            List of romanized strings sorted by priority (highest restriction number first)
+        """
         s = self.s[start:end]
         if not self.uroman.dict_bool[('s-prefix', s)]:
             return []
@@ -1969,36 +2008,92 @@ class Lattice:
         return [x[1] for x in rom_rule_candidates]
 
     def simple_top_romanization_candidate_for_span(self, start, end, simple_search: bool = False) -> str | None:
+        """
+        Finds the top romanization candidate for a text span with caching and syllable boundary handling.
+        
+        Evaluates all valid romanization rules for the span, selects the one with the highest
+        restriction priority, and optionally applies syllable-final romanization variants.
+        Results are cached for performance.
+        
+        Args:
+            start: Starting position of the text span in the input string
+            end: Ending position of the text span in the input string
+            simple_search: If True, skips syllable boundary checking and returns basic result
+            
+        Returns:
+            The best romanized string, or None if no valid candidates or invalid span range
+        """
+        # Check if span boundaries are within valid text range
         if (start < 0) or (end > self.max_vertex):
             return None
+
+        # Create tuple for cache key lookup
         span_range = (start, end)
+
+        # Return cached result if we've already computed this span
         if (cached_result := self.simple_top_rom_cache.get(span_range)) is not None:
             return cached_result
+
+        # Initialize variables to track the best romanization candidate
         best_cand, best_n_restr, best_rom_rule = None, None, None
+
+        # Iterate through all valid romanization rules for the span
         for rom_rule in self.uroman.rom_rules[self.s[start:end]]:
             if self.cand_is_valid(rom_rule, start, end, rom_rule['t']):
                 n_restr = rom_rule['n-restr'] or 0
                 if best_n_restr is None or (n_restr > best_n_restr):
                     best_cand, best_n_restr, best_rom_rule = rom_rule['t'], n_restr, rom_rule
+
+        # If this is a simple search, return the best candidate immediately
         if simple_search:
             return best_cand
+
+        # If there is a best romanization rule, apply any applicable syllable-final variants
         if best_rom_rule:
+             # Check if this rule has a special variant for syllable endings
             t_at_end_of_syllable = best_rom_rule['t-at-end-of-syllable']
             # noinspection GrazieInspection
             if t_at_end_of_syllable is not None:
+                # Determine if we're at the end of a syllable
                 is_at_end_of_syllable, rationale = self.is_at_end_of_syllable(end)
                 if is_at_end_of_syllable:
+                    # Use syllable-final variant instead of the base romanization
                     best_cand = t_at_end_of_syllable
+                # ==== Debugging ====
                 # print(f"   SIMPLE {start}-{end} {best_cand} ({best_rom_rule['t']},{t_at_end_of_syllable}) "
                 #       f"END:{is_at_end_of_syllable} ({rationale})")
+                # ====================
+
+        # Cache the result for future lookups
         self.simple_top_rom_cache[span_range] = best_cand
+
+        # ==== Debugging ====
         # if (best_rom_rule is not None) and ('cancel' in (prov := best_rom_rule['prov'])):
         #     sys.stderr.write(f'   Cancel {self.s} ({start}-{end}) {prov} {self.s[start:end]}\n')
+        # ====================
+
         return best_cand
 
     def decomp_rom(self, char_position: int) -> str | None:
-        """Input: decomposable character such as ﻼ or ½
-        Output: la or 1/2"""
+        """
+        Romanizes a decomposable Unicode character by decomposing it and romanizing its components.
+        
+        Handles characters like ligatures (ﻼ -> la), fractions (½ -> 1/2), and other composite
+        Unicode characters. Decomposes the character into its base components, filters out
+        formatting tags, and applies romanization to the resulting string.
+        
+        Args:
+            char_position: Position of the character to decompose in the input string
+            
+        Returns:
+            Romanized string representation of the decomposed character, or None if the character
+            cannot be decomposed or romanized
+            
+        Examples:
+            - ﻼ (Arabic lam-alif ligature) -> "la"
+            - ½ (vulgar fraction one half) -> "1/2"
+            - 23½ -> "23 1/2" (with spacing for numeric context)
+        """  
         full_string = self.s
         char = full_string[char_position]
         rom = None
@@ -2030,7 +2125,20 @@ class Lattice:
         return rom
 
     def add_romanization(self, **args):
-        """Adds a romanization edge to the romanization lattice."""
+        """
+        Builds the romanization lattice by adding edges for all valid romanization candidates.
+        
+        Iterates through all possible text spans, finds romanization candidates, applies
+        abugida vowel rules, handles special character expansions, and adds edges for
+        Korean Hangul and decomposable characters. Creates a complete graph of all possible
+        romanization paths through the text.
+        
+        The method processes:
+        - Multi-character spans with romanization rules
+        - Single characters with special handling (Braille, Hangul, decomposable)
+        - Abugida vowel additions and modifications
+        - Special character expansions and tail annotations
+        """
         for start in range(self.max_vertex):
             for end in range(start+1, self.max_vertex+1):
                 if not self.uroman.dict_bool[('s-prefix', self.s[start:end])]:
@@ -2070,6 +2178,22 @@ class Lattice:
 
     @staticmethod
     def update_edge_list(edges, new_edge, old_edges) -> List[NumEdge]:
+        """
+        Updates an edge list by replacing old edges with a new edge and marking old edges as inactive.
+        
+        Iterates through the existing edges, deactivates any edges that are in the old_edges set,
+        and inserts the new_edge in place of the first deactivated edge. This is used to
+        replace outdated romanization paths with updated ones while preserving the order
+        and structure of the edge list.
+        
+        Args:
+            edges: List of current edges to update
+            new_edge: New edge to insert in place of old edges
+            old_edges: Set of edges to deactivate and replace
+            
+        Returns:
+            Updated list of edges with old edges deactivated and new edge inserted
+        """
         new_edge_not_yet_added = True
         result = []
         for edge in edges:
@@ -2086,6 +2210,15 @@ class Lattice:
 
     @staticmethod
     def edge_is_digit(edge: Edge | None) -> bool:
+        """
+        Checks if an edge represents a single digit (0-9) and is a valid digit edge.
+        
+        Args:
+            edge: Edge to check
+        
+        Returns:
+            True if the edge is a valid digit edge, False otherwise
+        """
         return (isinstance(edge, NumEdge)
                 and (edge.value is not None)
                 and isinstance(edge.value, int)
@@ -2095,19 +2228,52 @@ class Lattice:
 
     @staticmethod
     def is_gap_null_edge(edge: Edge) -> bool:
+        """
+        Checks if an edge represents a Chinese zero character.
+        
+        Args:
+            edge: Edge to check
+        
+        Returns:
+            True if the edge represents a Chinese zero character (零 or 〇), False otherwise
+        """
         return isinstance(edge, NumEdge) and (edge.orig_txt in ('零', '〇'))
 
     @staticmethod
     def braille_digit(char: str) -> str | None:
+        """
+        Converts a Braille character to its corresponding digit (0-9).
+        
+        Args:
+            char: Braille character to convert
+        
+        Returns:
+            String representation of the digit (0-9) if the character is a valid Braille digit, None otherwise
+        """
         position = '\u281A\u2801\u2803\u2809\u2819\u2811\u280B\u281B\u2813\u280A'.find(char)  # Braille 0-9
         return str(position) if position >= 0 else None
 
     def add_braille_number(self, start: int, end: int, txt: str, **_args) -> None:
+        """
+        Adds a Braille number edge to the romanization lattice.
+        
+        Args:
+            start: Start position of the Braille number
+            end: End position of the Braille number
+            txt: String representation of the Braille number
+        """
         new_edge = NumEdge(start, end, txt, self.uroman)
         new_edge.type = 'number'
         self.add_edge(new_edge)
 
     def add_braille_numbers(self, **_args):
+        """
+        Adds Braille number edges to the romanization lattice.
+        
+        Iterates through the input string, identifies Braille number sequences, and adds
+        corresponding number edges to the lattice. Handles number marks, periods, commas,
+        and combines digits into complete numbers.
+        """
         if self.contains_script['Braille']:
             s = self.s
             num_s, start = '', None
@@ -2130,7 +2296,16 @@ class Lattice:
 
     # noinspection PyUnboundLocalVariable
     def add_numbers(self, uroman, **args):
-        """Adds a numerical romanization edge to the romanization lattice, currently just for digits."""
+        """
+        Adds a numerical romanization edge to the romanization lattice, currently just for digits.
+        
+        Args:
+            uroman: Uroman object
+            args: Additional arguments (not used)
+        
+        Returns:
+            None
+        """
         verbose = bool(args.get('verbose'))
         s = self.s
         num_edges = []
@@ -2368,7 +2543,14 @@ class Lattice:
 
     def add_rom_fall_back_singles(self, **_args):
         """For characters in the original string not covered by romanizations and numbers,
-        add a fallback edge based on type, romanization of single char, or original char."""
+        add a fallback edge based on type, romanization of single char, or original char.
+        
+        Args:
+            _args: Additional arguments (not used)
+        
+        Returns:
+            None
+        """
         for start in range(self.max_vertex):
             end = start+1
             orig_char = self.s[start]
@@ -2394,8 +2576,22 @@ class Lattice:
 
     @staticmethod
     def add_new_edge(old_edges: List[Edge], start: int, end: int, new_rom: str, new_type: str, position: int | None,
-                     old_edge_dict: dict)\
-            -> None:
+                     old_edge_dict: dict) -> None:
+        """
+        Adds a new edge to the romanization lattice.
+        
+        Args:
+            old_edges: List of current edges to update
+            start: Start position of the new edge
+            end: End position of the new edge
+            new_rom: String representation of the new edge
+            new_type: Type of the new edge
+            position: Position to insert the new edge in the list
+            old_edge_dict: Dictionary of old edges
+        
+        Returns:
+            None
+        """
         if (start, end, new_rom) not in old_edge_dict:
             new_edge = Edge(start, end, new_rom, new_type)
             if position is None:
@@ -2406,9 +2602,19 @@ class Lattice:
             # print(f'  ALT {start}-{end} {new_rom}')
 
     def add_alternatives(self, old_edges: List[Edge]) -> None:
+        """
+        Adds alternative romanization edges to the romanization lattice.
+        
+        Args:
+            old_edges: List of current edges to update
+        
+        Returns:
+            None
+        """
         old_edge_dict = {}
         for old_edge in old_edges:
             old_edge_dict[(old_edge.start, old_edge.end, old_edge.txt)] = old_edge
+ 
         for position, old_edge in enumerate(old_edges):
             if old_edge.type.startswith('rom-alt'):
                 continue   # not old
@@ -2438,6 +2644,16 @@ class Lattice:
                         self.add_new_edge(old_edges, start, end, rom_t, 'rom-alt3', position, old_edge_dict)
 
     def all_edges(self, start: int, end: int) -> List[Edge]:
+        """
+        Returns all edges in the romanization lattice for a given span.
+        
+        Args:
+            start: Start position of the span
+            end: End position of the span
+        
+        Returns:
+            List of all edges in the lattice for the given span
+        """
         result = []
         for start2 in range(start, end):
             for end2 in sorted(list(self.lattice[(start2, 'right')]), reverse=True):
@@ -2448,10 +2664,22 @@ class Lattice:
         return result
 
     def best_edge_in_span(self, start: int, end: int, skip_num_edge: bool = False) -> Edge | None:
+        """
+        Finds the best romanization edge in a given span.
+        
+        Args:
+            start: Start position of the span
+            end: End position of the span
+            skip_num_edge: Whether to skip number edges
+        
+        Returns:
+            The best romanization edge in the span, or None if no valid edge is found
+        """
         edges = self.lattice[(start, end)]
         # if len(edges) >= 2: print('Multi edge', start2, end2, self.s[start2:end2], edges)
         decomp_edge, other_edge, rom_edge = None, None, None
         for edge in edges:
+            # An active number edge is a potential best edge
             if isinstance(edge, NumEdge):
                 if skip_num_edge:
                     continue
