@@ -174,7 +174,7 @@ def run_quick_demo():
             actual = tester.reverse_uroman.reverse_romanize_string(latin_input, target_script=script)
             
             # Calculate distance
-            distance = tester.string_distance.calculate_distance(expected, actual)
+            distance = tester.string_distance.calculate_distance(expected, actual, debug=True)
             normalized = tester.string_distance.calculate_normalized_distance(expected, actual)
             
             print(f"Test {i+1}:")

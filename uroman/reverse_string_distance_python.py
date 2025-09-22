@@ -74,23 +74,50 @@ class PythonStringDistance:
         
         return rules
     
-    def calculate_distance(self, text1: str, text2: str) -> float:
+    def calculate_distance(self, text1: str, text2: str, debug: bool = False) -> float:
         """
         Calculate string distance between two texts.
         
         Args:
             text1: First text
             text2: Second text
+            debug: Enable detailed debugging output
             
         Returns:
             Distance score (lower = more similar)
         """
+        # Store original texts for debugging
+        original_text1, original_text2 = text1, text2
+        
         # Normalize texts
         text1 = text1.lower().strip()
         text2 = text2.lower().strip()
         
+        if debug:
+            print(f"\n=== STRING DISTANCE DEBUG ===")
+            print(f"Original text1: '{original_text1}' (len={len(original_text1)})")
+            print(f"Original text2: '{original_text2}' (len={len(original_text2)})")
+            print(f"Normalized text1: '{text1}' (len={len(text1)})")
+            print(f"Normalized text2: '{text2}' (len={len(text2)})")
+            print(f"Text1 bytes: {text1.encode('utf-8')}")
+            print(f"Text2 bytes: {text2.encode('utf-8')}")
+            print(f"Are they equal? {text1 == text2}")
+            print(f"Character-by-character comparison:")
+            for i, (c1, c2) in enumerate(zip(text1, text2)):
+                match = "✓" if c1 == c2 else "✗"
+                print(f"  [{i:2d}] '{c1}' vs '{c2}' {match} (bytes: {c1.encode('utf-8')} vs {c2.encode('utf-8')})")
+            if len(text1) != len(text2):
+                print(f"  Length difference: {len(text1)} vs {len(text2)}")
+                if len(text1) > len(text2):
+                    print(f"  Extra chars in text1: '{text1[len(text2):]}'")
+                else:
+                    print(f"  Extra chars in text2: '{text2[len(text1):]}'")
+        
         # Use dynamic programming (Levenshtein distance with custom costs)
         m, n = len(text1), len(text2)
+        
+        if debug:
+            print(f"\nMatrix dimensions: {m+1} x {n+1}")
         
         # Create distance matrix
         dp = [[0.0] * (n + 1) for _ in range(m + 1)]
@@ -101,21 +128,62 @@ class PythonStringDistance:
         for j in range(n + 1):
             dp[0][j] = j * 1.0  # Insertion cost
         
+        if debug:
+            print(f"\nInitialized matrix:")
+            print("   ", end="")
+            for j in range(n + 1):
+                print(f"{j:4}", end="")
+            print()
+            for i in range(m + 1):
+                print(f"{i:2}: ", end="")
+                for j in range(n + 1):
+                    print(f"{dp[i][j]:4.1f}", end="")
+                print()
+        
         # Fill the matrix
         for i in range(1, m + 1):
             for j in range(1, n + 1):
-                if text1[i-1] == text2[j-1]:
+                char1, char2 = text1[i-1], text2[j-1]
+                
+                if debug:
+                    print(f"\nPosition [{i},{j}]: comparing '{char1}' vs '{char2}'")
+                
+                if char1 == char2:
                     dp[i][j] = dp[i-1][j-1]  # No cost for match
+                    if debug:
+                        print(f"  Match! dp[{i},{j}] = dp[{i-1},{j-1}] = {dp[i][j]}")
                 else:
                     # Calculate substitution cost
-                    sub_cost = self._get_substitution_cost(text1[i-1], text2[j-1])
+                    sub_cost = self._get_substitution_cost(char1, char2)
+                    
+                    # Calculate all three operations
+                    deletion_cost = dp[i-1][j] + 1.0
+                    insertion_cost = dp[i][j-1] + 1.0
+                    substitution_cost = dp[i-1][j-1] + sub_cost
                     
                     # Take minimum of three operations
-                    dp[i][j] = min(
-                        dp[i-1][j] + 1.0,      # Deletion
-                        dp[i][j-1] + 1.0,      # Insertion
-                        dp[i-1][j-1] + sub_cost  # Substitution
-                    )
+                    dp[i][j] = min(deletion_cost, insertion_cost, substitution_cost)
+                    
+                    if debug:
+                        print(f"  Mismatch! Options:")
+                        print(f"    Deletion:    dp[{i-1},{j}] + 1.0 = {dp[i-1][j]:.1f} + 1.0 = {deletion_cost:.1f}")
+                        print(f"    Insertion:   dp[{i},{j-1}] + 1.0 = {dp[i][j-1]:.1f} + 1.0 = {insertion_cost:.1f}")
+                        print(f"    Substitution: dp[{i-1},{j-1}] + {sub_cost:.1f} = {dp[i-1][j-1]:.1f} + {sub_cost:.1f} = {substitution_cost:.1f}")
+                        print(f"    Chosen: {dp[i][j]:.1f} ({'deletion' if dp[i][j] == deletion_cost else 'insertion' if dp[i][j] == insertion_cost else 'substitution'})")
+        
+        if debug:
+            print(f"\nFinal matrix:")
+            print("   ", end="")
+            for j in range(n + 1):
+                print(f"{j:4}", end="")
+            print()
+            for i in range(m + 1):
+                print(f"{i:2}: ", end="")
+                for j in range(n + 1):
+                    print(f"{dp[i][j]:4.1f}", end="")
+                print()
+            print(f"\nFinal distance: dp[{m},{n}] = {dp[m][n]}")
+            print("=== END DEBUG ===\n")
         
         return dp[m][n]
     
@@ -251,7 +319,7 @@ class ReverseStringDistanceTester:
                 )
                 
                 # Calculate string distance
-                distance = self.string_distance.calculate_distance(expected_output, actual_output)
+                distance = self.string_distance.calculate_distance(expected_output, actual_output, debug=True)
                 normalized_distance = self.string_distance.calculate_normalized_distance(expected_output, actual_output)
                 
                 sample_result = {
