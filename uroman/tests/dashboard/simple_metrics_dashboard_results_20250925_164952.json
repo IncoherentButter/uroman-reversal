@@ -1,0 +1,203 @@
+{
+  "timestamp": "2025-09-25T16:49:52.239314",
+  "test_results": [
+    {
+      "test_id": 1,
+      "input": "salam alaykum",
+      "expected": "سلام عليكم",
+      "output": "سلام الايكوم",
+      "target_script": "Arabic",
+      "description": "Arabic greeting",
+      "success": true
+    },
+    {
+      "test_id": 2,
+      "input": "habari yako",
+      "expected": "habari yako",
+      "output": "habari yako",
+      "target_script": "Swahili",
+      "description": "Swahili greeting",
+      "success": true
+    },
+    {
+      "test_id": 3,
+      "input": "hello world",
+      "expected": "hello world",
+      "output": "hello world",
+      "target_script": "English",
+      "description": "English text",
+      "success": true
+    },
+    {
+      "test_id": 4,
+      "input": "merhaba",
+      "expected": "merhaba",
+      "output": "merhaba",
+      "target_script": "Turkish",
+      "description": "Turkish greeting",
+      "success": true
+    },
+    {
+      "test_id": 5,
+      "input": "bonjour",
+      "expected": "bonjour",
+      "output": "bonjour",
+      "target_script": "French",
+      "description": "French greeting",
+      "success": true
+    },
+    {
+      "test_id": 6,
+      "input": "hola",
+      "expected": "hola",
+      "output": "hola",
+      "target_script": "Spanish",
+      "description": "Spanish greeting",
+      "success": true
+    },
+    {
+      "test_id": 7,
+      "input": "namaste",
+      "expected": "नमस्ते",
+      "output": "namaste",
+      "target_script": "Hindi",
+      "description": "Hindi greeting",
+      "success": true
+    },
+    {
+      "test_id": 8,
+      "input": "konnichiwa",
+      "expected": "こんにちは",
+      "output": "konnichiwa",
+      "target_script": "Japanese",
+      "description": "Japanese greeting",
+      "success": true
+    }
+  ],
+  "metrics_results": {
+    "WER": {
+      "overall_wer": 0.2727272727272727,
+      "individual_wer": [
+        0.5,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "total_words": 11,
+      "total_edits": 3.0
+    },
+    "CER": {
+      "overall_cer": 0.32786885245901637,
+      "individual_cer": [
+        0.3,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.1666666666666667,
+        2.0
+      ],
+      "total_chars": 61,
+      "total_edits": 20.0
+    },
+    "MER": {
+      "overall_mer": 0.2727272727272727,
+      "individual_mer": [
+        0.5,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "total_words": 11,
+      "total_mismatches": 3.0
+    },
+    "WIL": {
+      "overall_wil": 0.0,
+      "individual_wil": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "total_words": 11,
+      "total_information_lost": 0.0
+    },
+    "WIP": {
+      "overall_wip": 0.5454545454545454,
+      "individual_wip": [
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "total_words": 11,
+      "total_information_preserved": 6.0
+    }
+  },
+  "summary": {
+    "evaluation_info": {
+      "total_tests": 8,
+      "successful_tests": 8,
+      "success_rate": 1.0,
+      "timestamp": "2025-09-25T16:49:52.239314"
+    },
+    "metrics_overview": {
+      "WER": {
+        "value": 0.2727272727272727,
+        "status": "✅ Calculated",
+        "interpretation": "Word Error Rate: 27.3% of words have errors"
+      },
+      "CER": {
+        "value": 0.32786885245901637,
+        "status": "✅ Calculated",
+        "interpretation": "Character Error Rate: 32.8% of characters have errors"
+      },
+      "MER": {
+        "value": 0.2727272727272727,
+        "status": "✅ Calculated",
+        "interpretation": "Match Error Rate: 27.3% of words don't match exactly"
+      },
+      "WIL": {
+        "value": 0.0,
+        "status": "✅ Calculated",
+        "interpretation": "Word Information Lost: 0.0% of word-level information lost"
+      },
+      "WIP": {
+        "value": 0.5454545454545454,
+        "status": "✅ Calculated",
+        "interpretation": "Word Information Preserved: 54.5% of word-level information preserved"
+      }
+    },
+    "performance_analysis": {
+      "overall_quality": "Needs Improvement",
+      "recommendations": [
+        "Improve character-level romanization accuracy",
+        "Improve information preservation during romanization"
+      ],
+      "strengths": [
+        "Good word accuracy"
+      ],
+      "weaknesses": [
+        "Poor character accuracy",
+        "Poor information preservation"
+      ]
+    }
+  }
+}

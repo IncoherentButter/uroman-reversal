@@ -275,6 +275,17 @@ class ReverseLattice:
                     annotation="fallback"
                 )
                 self.edges[i].append(edge)
+            else:
+                # Preserve non-alphabetic characters (spaces, punctuation, etc.)
+                edge = ReverseEdge(
+                    start=i,
+                    end=i+1,
+                    latin=char,
+                    target=char,  # Pass through unchanged
+                    script="Latin",  # Mark as Latin since it's not being converted
+                    annotation="preserve"
+                )
+                self.edges[i].append(edge)
     
     def find_best_rule(self, rules: List[ReverseRomRule]) -> Optional[ReverseRomRule]:
         """Find the best reverse romanization rule"""
